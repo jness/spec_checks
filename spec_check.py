@@ -1,15 +1,23 @@
 #!/usr/bin/env python
 
+from glob import glob
+from configobj import ConfigObj
 import sys, os
 
-def read_spec(spec):
-    if os.path.exists(spec):
-        f = file(spec, 'r')
-        content = f.readlines()
-        return content
+def configs():
+    'Check config files in ./configs and parse the data'
+    config_dir = './configs'
+    checks = {}
+    for _file in glob("%s/*.conf" % config_dir):
+        c = ConfigObj(_file)
+        if not c['enabled'] in [True, 'True', 'true', 1, '1']:
+            continue
+        checks[c['order']] = c
+    return checks
 
-def run_check(output):
+def runcheck(type, message):
     userinput = raw_input('Does this look good (Y/n/skip): ')
+    output = type + ' ' + message
     if userinput.lower() == 'y':
         results = '[ pass ] ' + output
     elif userinput.lower() == 'skip':
@@ -19,19 +27,17 @@ def run_check(output):
     return results
 
 # Take input for location of SPEC file
-spec = sys.argv[1]
+#spec = sys.argv[1]
 
 # This will be the list that hold our results
 results = []
-
-# Lets read in the spec now
-spec_lines = read_spec(spec)
+checks = configs()
 
 # Check 1
-os.system('clear')
-print 'rpmlint must be run on every package\n'
-results.append(run_check('MUST: rpmlint must be run on every package'))
+for check in sorted(checks):
+    os.system('clear')
+    print checks[check]['message']
+    results.append(runcheck(checks[check]['type'], checks[check]['message']))
 
-# Complete
 for result in results:
     print result

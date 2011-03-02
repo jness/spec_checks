@@ -36,7 +36,7 @@ checks = configs()
 # Check 1
 for check in sorted(checks):
     os.system('clear')
-    print checks[check]['message']
+    print checks[check]['message'] + '\n'
     results.append(runcheck(checks[check]['type'], checks[check]['message']))
 
 for result in results:

@@ -36,8 +36,14 @@ checks = configs()
 # Check 1
 for check in sorted(checks):
     os.system('clear')
-    print checks[check]['message'] + '\n'
+    message = checks[check]['message']
+    print 'Check #' + str(check)
+    print '='*80
+    print '         ' + message + '\n'
     results.append(runcheck(checks[check]['type'], checks[check]['message']))
 
+os.system('clear')
+print 'Results for Bugzilla'
+print '='*80
 for result in results:
     print result

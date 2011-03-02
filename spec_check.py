@@ -12,7 +12,7 @@ def configs():
         c = ConfigObj(_file)
         if not c['enabled'] in [True, 'True', 'true', 1, '1']:
             continue
-        checks[c['order']] = c
+        checks[int(c['order'])] = c
     return checks
 
 def runcheck(type, message):

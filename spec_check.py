@@ -82,7 +82,7 @@ for check in sorted(checks):
     else:
         print specfile(args.spec) + ':'
         print '-'*35
-        print speclicense(spec_lines) 
+        print '   ' + eval(command) + '\n'
 
     results.append(runcheck(checks[check]['type'], checks[check]['message']))
 

@@ -3,6 +3,7 @@
 from glob import glob
 from configobj import ConfigObj
 import sys, os
+import argparse
 
 def configs():
     'Check config files in ./configs and parse the data'
@@ -26,8 +27,10 @@ def runcheck(type, message):
         results = '[ fail ] ' + output
     return results
 
-# Take input for location of SPEC file
-#spec = sys.argv[1]
+# Use argparse to take input for SPEC File
+parser = argparse.ArgumentParser()
+parser.add_argument('--spec', help='SPEC File', required=True)
+args = parser.parse_args()
 
 # This will be the list that hold our results
 results = []
@@ -37,7 +40,8 @@ checks = configs()
 for check in sorted(checks):
     os.system('clear')
     message = checks[check]['message']
-    print 'Check #' + str(check)
+    print 'CHECK: ' + str(check)
+    print args.spec
     print '='*80
     print '         ' + message + '\n'
     results.append(runcheck(checks[check]['type'], checks[check]['message']))

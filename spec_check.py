@@ -84,6 +84,15 @@ for check in sorted(checks):
         print '-'*35
         print '   ' + eval(command) + '\n'
 
+    # See if we have Fedora Documentation
+    try:
+        doc = checks[check]['doc']
+    except KeyError:
+        pass
+    else:
+        print '  What does Fedora have to say?'
+        print '  ' + doc + '\n'
+
     results.append(runcheck(checks[check]['type'], checks[check]['message']))
 
 os.system('clear')

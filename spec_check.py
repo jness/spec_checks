@@ -16,7 +16,7 @@ def configs():
         checks[int(c['order'])] = c
     return checks
 
-def runcheck(type, message):
+def runcheck(type, message, doc):
     userinput = raw_input('Does this look good (Y/n/skip): ')
     output = type + ' ' + message
     if userinput.lower() == 'y':
@@ -24,7 +24,9 @@ def runcheck(type, message):
     elif userinput.lower() == 'skip':
         results = '[ ---- ] ' + output
     else:
-        results = '[ fail ] ' + output
+        results = '''[ fail ] ''' + output + ''' 
+
+ ''' + doc
     return results
 
 def readspec(spec):
@@ -93,10 +95,10 @@ for check in sorted(checks):
         print '  What does Fedora have to say?'
         print '  ' + doc + '\n'
 
-    results.append(runcheck(checks[check]['type'], checks[check]['message']))
+    results.append(runcheck(checks[check]['type'], checks[check]['message'], checks[check]['doc']))
 
 os.system('clear')
 print 'Results for Bugzilla'
 print '='*80
 for result in results:
-    print result
+    print result + '\n'

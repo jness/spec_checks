@@ -5,6 +5,14 @@ from configobj import ConfigObj
 import sys, os
 import argparse
 
+class colors:
+    pink = '\033[95m'
+    red = '\033[91m'
+    green = '\033[92m'
+    gold = '\033[93m'
+    blue = '\033[94m'
+    end = '\033[0m'
+
 def configs():
     'Check config files in ./configs and parse the data'
     config_dir = './configs'
@@ -20,14 +28,17 @@ def runcheck(type, message, doc):
     userinput = raw_input('Does this look good (Y/n/skip): ')
     output = type + ' ' + message
     if userinput.lower() == 'y':
-        results = '[ pass ] ' + output
+        results = '[ ' + colors.green + 'pass' + colors.end + ' ] ' + output
+        status = 'pass'
     elif userinput.lower() == 'skip':
-        results = '[ ---- ] ' + output
+        results = '[ ' + colors.green + '----' + colors.end + ' ] ' + output
+        status = 'pass'
     else:
-        results = '''[ fail ] ''' + output + ''' 
+        results = '''[ ''' + colors.red + '''fail''' + colors.end + ''' ] ''' + output + ''' 
 
  ''' + doc
-    return results
+        status = 'fail'
+    return results, status
 
 def readspec(spec):
     if os.path.exists(spec):
@@ -63,7 +74,8 @@ parser.add_argument('--spec', help='SPEC File', required=True)
 args = parser.parse_args()
 
 # Prep for run
-results = []
+passed = []
+failed = []
 checks = configs()
 spec_lines = readspec(args.spec)
 
@@ -94,11 +106,25 @@ for check in sorted(checks):
     else:
         print '  What does Fedora have to say?'
         print '  ' + doc + '\n'
+    
+    # Run the given check
+    mycheck = runcheck(checks[check]['type'], checks[check]['message'], checks[check]['doc'])
+    if mycheck[1] == 'pass':
+        passed.append(mycheck[0])
+    else:
+        failed.append(mycheck[0])    
 
-    results.append(runcheck(checks[check]['type'], checks[check]['message'], checks[check]['doc']))
 
 os.system('clear')
-print 'Results for Bugzilla'
-print '='*80
-for result in results:
-    print result + '\n'
+
+# Print our failed checks
+if failed:
+    print "FAILED MUST HAVE's:\n"
+    for f in failed:
+        print f + '\n'
+
+# Print our Passed checks
+if passed:
+    print "PASSED MUST HAVE'S:\n"
+    for p in passed:
+        print p + '\n'

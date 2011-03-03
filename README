@@ -19,84 +19,293 @@ Does this look good (Y/n/skip):
 
 Once you are complete checking you will get a list which can go in to Bugzilla:
 
+FAILED MUST HAVE's:
 
+[ fail ] MUST rpmlint must be run on every package 
 
-Results for Bugzilla
-================================================================================
-[ fail ] MUST rpmlint must be run on every package
+ http://fedoraproject.org/wiki/ParagNemade/CommonRpmlintErrors
+
 [ fail ] MUST The package must be named according to the Package Naming 
-         Guidelines
-[ fail ] MUST The spec file name must match the base package %{name}
+         Guidelines 
+
+ http://fedoraproject.org/wiki/Packaging/NamingGuidelines
+
+[ fail ] MUST The spec file name must match the base package %{name} 
+
+ http://fedoraproject.org/wiki/Packaging:NamingGuidelines#Spec_file_name
+
 [ fail ] MUST The package must be licensed with a Fedora approved license
-         and meet the Licensing Guidelines
+         and meet the Licensing Guidelines 
+
+ http://fedoraproject.org/wiki/Licensing#Good_Licenses
+
 [ fail ] MUST The License field in the package spec file must match the 
-         actual license
+         actual license 
+
+ https://fedoraproject.org/wiki/Packaging/LicensingGuidelines#Fedora_Licensing
+
 [ fail ] MUST If (and only if) the source package includes the text of the 
          license(s) in its own file, then that file, containing the text of 
-         the license(s) for the package must be included in %doc
-[ fail ] MUST The spec file must be written in American English.
+         the license(s) for the package must be included in %doc 
+
+ https://fedoraproject.org/wiki/Packaging/LicensingGuidelines#License_Text
+
+[ fail ] MUST The spec file must be written in American English. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#summary
+
 [ fail ] MUST The sources used to build the package must match the upstream 
          source, as provided in the spec URL. Reviewers should use md5sum for 
          this task. If no upstream URL can be specified for this package, 
-         please see the Source URL Guidelines for how to deal with this.
+         please see the Source URL Guidelines for how to deal with this. 
+
+ http://fedoraproject.org/wiki/Packaging/SourceURL#Referencing_Source
+
 [ fail ] MUST The package MUST successfully compile and build into binary 
-         rpms on at least one primary architecture
+         rpms on at least one primary architecture 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Architecture_Support
+
 [ fail ] MUST If the package does not successfully compile, build or work on 
          an architecture, then those architectures should be listed in the 
          spec in ExcludeArch. Each architecture listed in ExcludeArch MUST 
          have a bug filed in bugzilla, describing the reason that the package 
          does not compile/build/work on that architecture. The bug number MUST 
-         be placed in a comment, next to the corresponding ExcludeArch line
+         be placed in a comment, next to the corresponding ExcludeArch line 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Architecture_Build_Failures
+
 [ fail ] MUST All build dependencies must be listed in BuildRequires, except 
          for any that are listed in the exceptions section of the Packaging 
          Guidelines ; inclusion of those as BuildRequires is optional. Apply 
-         common sense.
+         common sense. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Exceptions_2
+
 [ fail ] MUST The spec file MUST handle locales properly. This is done by 
          using the %find_lang macro. Using %{_datadir}/locale/* is strictly 
-         forbidden
+         forbidden 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Handling_Locale_Files
+
 [ fail ] MUST Every binary RPM package (or subpackage) which stores shared 
          library files (not just symlinks) in any of the dynamic linker's 
-         default paths, must call ldconfig in %post and %postun.
+         default paths, must call ldconfig in %post and %postun. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Shared_Libraries
+
 [ fail ] MUST If the package is designed to be relocatable, the packager must 
          state this fact in the request for review, along with the 
          rationalization for relocation of that specific package. Without 
-         this, use of Prefix: /usr is considered a blocker.
+         this, use of Prefix: /usr is considered a blocker. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#RelocatablePackages
+
 [ fail ] MUST A package must own all directories that it creates. If it does 
          not create a directory that it uses, then it should require a package 
-         which does create that directory.
+         which does create that directory. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#FileAndDirectoryOwnership
+
 [ fail ] MUST A package must not contain any duplicate files in the %files 
-         listing.
-[ fail ] MUST Permissions on files must be set properly. Executables should 
-         be set with executable permissions, for example. Every %files section 
-         must include a %defattr(...) line.
-[ fail ] MUST Each package must have a %clean section, which contains rm -rf
-         %{buildroot} (or $RPM_BUILD_ROOT).
-[ fail ] MUST The package must contain code, or permissible content.
-[ fail ] MUST Large documentation files must go in a -doc subpackage. (The 
-         definition of large is left up to the packager's best judgement, but 
-         is not restricted to size. Large can refer to either size or 
-         quantity).
-[ fail ] MUST If a package includes something as %doc, it must not affect the 
-         runtime of the application. To summarize: If it is in %doc, the 
-         program must run properly if it is not present.
-[ fail ] MUST Header files must be in a -devel package.
-[ fail ] MUST Static libraries must be in a -static package.
+         listing. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#DuplicateFiles
+
+[ fail ] MUST Static libraries must be in a -static package. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#StaticLibraries
+
 [ fail ] MUST Packages containing pkgconfig(.pc) files must 'Requires: 
-         pkgconfig' (for directory ownership and usability).
+         pkgconfig' (for directory ownership and usability). 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#PkgconfigFiles
+
 [ fail ] MUST If a package contains library files with a suffix (e.g. 
          libfoo.so.1.1), then library files that end in .so (without suffix) 
-         must go in a -devel package.
+         must go in a -devel package. 
+
+ http://fedoraproject.org/wiki/Packaging/ReviewGuidelines#cite_ref-devel_18-1
+
 [ fail ] MUST In the vast majority of cases, devel packages must require the 
          base package using a fully versioned dependency: Requires: %{name} =
-         %{version}-%{release}
+         %{version}-%{release} 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#RequiringBasePackage
+
 [ fail ] MUST Packages must NOT contain any .la libtool archives, these must 
-         be removed in the spec if they are built.
+         be removed in the spec if they are built. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#StaticLibraries
+
 [ fail ] MUST Packages containing GUI applications must include a
          %{name}.desktop file, and that file must be properly installed with 
          desktop-file-install in the %install section. If you feel that your 
          packaged GUI application does not need a .desktop file, you must put 
+         a comment in the spec file with your explanation. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#desktop
+
+[ fail ] MUST At the beginning of %install, each package MUST run rm -rf
+         %{buildroot} (or $RPM_BUILD_ROOT). 
+FAILED MUST HAVE's:
+
+[ fail ] MUST rpmlint must be run on every package 
+
+ http://fedoraproject.org/wiki/ParagNemade/CommonRpmlintErrors
+
+[ fail ] MUST The package must be named according to the Package Naming 
+         Guidelines 
+
+ http://fedoraproject.org/wiki/Packaging/NamingGuidelines
+
+[ fail ] MUST The spec file name must match the base package %{name} 
+
+ http://fedoraproject.org/wiki/Packaging:NamingGuidelines#Spec_file_name
+
+[ fail ] MUST The package must be licensed with a Fedora approved license
+         and meet the Licensing Guidelines 
+
+ http://fedoraproject.org/wiki/Licensing#Good_Licenses
+
+[ fail ] MUST The License field in the package spec file must match the 
+         actual license 
+
+ https://fedoraproject.org/wiki/Packaging/LicensingGuidelines#Fedora_Licensing
+
+[ fail ] MUST If (and only if) the source package includes the text of the 
+         license(s) in its own file, then that file, containing the text of 
+         the license(s) for the package must be included in %doc 
+
+ https://fedoraproject.org/wiki/Packaging/LicensingGuidelines#License_Text
+
+[ fail ] MUST The spec file must be written in American English. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#summary
+
+[ fail ] MUST The sources used to build the package must match the upstream 
+         source, as provided in the spec URL. Reviewers should use md5sum for 
+         this task. If no upstream URL can be specified for this package, 
+         please see the Source URL Guidelines for how to deal with this. 
+
+ http://fedoraproject.org/wiki/Packaging/SourceURL#Referencing_Source
+
+[ fail ] MUST The package MUST successfully compile and build into binary 
+         rpms on at least one primary architecture 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Architecture_Support
+
+[ fail ] MUST If the package does not successfully compile, build or work on 
+         an architecture, then those architectures should be listed in the 
+         spec in ExcludeArch. Each architecture listed in ExcludeArch MUST 
+         have a bug filed in bugzilla, describing the reason that the package 
+         does not compile/build/work on that architecture. The bug number MUST 
+         be placed in a comment, next to the corresponding ExcludeArch line 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Architecture_Build_Failures
+
+[ fail ] MUST All build dependencies must be listed in BuildRequires, except 
+         for any that are listed in the exceptions section of the Packaging 
+         Guidelines ; inclusion of those as BuildRequires is optional. Apply 
+         common sense. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Exceptions_2
+
+[ fail ] MUST The spec file MUST handle locales properly. This is done by 
+         using the %find_lang macro. Using %{_datadir}/locale/* is strictly 
+         forbidden 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Handling_Locale_Files
+
+[ fail ] MUST Every binary RPM package (or subpackage) which stores shared 
+         library files (not just symlinks) in any of the dynamic linker's 
+         default paths, must call ldconfig in %post and %postun. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#Shared_Libraries
+
+[ fail ] MUST If the package is designed to be relocatable, the packager must 
+         state this fact in the request for review, along with the 
+         rationalization for relocation of that specific package. Without 
+         this, use of Prefix: /usr is considered a blocker. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#RelocatablePackages
+
+[ fail ] MUST A package must own all directories that it creates. If it does 
+         not create a directory that it uses, then it should require a package 
+         which does create that directory. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#FileAndDirectoryOwnership
+
+[ fail ] MUST A package must not contain any duplicate files in the %files 
+         listing. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#DuplicateFiles
+
+[ fail ] MUST Permissions on files must be set properly. Executables should 
+         be set with executable permissions, for example. Every %files section 
+         must include a %defattr(...) line. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#FilePermissions
+
+[ fail ] MUST Each package must have a %clean section, which contains rm -rf
+         %{buildroot} (or $RPM_BUILD_ROOT). 
+
+ http://fedoraproject.org/wiki/PackagingGuidelines#.25clean
+
+[ fail ] MUST The package must contain code, or permissible content. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#CodeVsContent
+
+[ fail ] MUST Large documentation files must go in a -doc subpackage. (The 
+         definition of large is left up to the packager's best judgement, but 
+         is not restricted to size. Large can refer to either size or 
+         quantity). 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#PackageDocumentation
+
+[ fail ] MUST If a package includes something as %doc, it must not affect the 
+         runtime of the application. To summarize: If it is in %doc, the 
+         program must run properly if it is not present. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#PackageDocumentation
+
+[ fail ] MUST Header files must be in a -devel package. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#DevelPackages
+
+[ fail ] MUST Static libraries must be in a -static package. 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#StaticLibraries
+
+[ fail ] MUST Packages containing pkgconfig(.pc) files must 'Requires: 
+         pkgconfig' (for directory ownership and usability). 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#PkgconfigFiles
+
+[ fail ] MUST If a package contains library files with a suffix (e.g. 
+         libfoo.so.1.1), then library files that end in .so (without suffix) 
+         must go in a -devel package. 
+
+ http://fedoraproject.org/wiki/Packaging/ReviewGuidelines#cite_ref-devel_18-1
+
+[ fail ] MUST In the vast majority of cases, devel packages must require the 
+         base package using a fully versioned dependency: Requires: %{name} =
+         %{version}-%{release} 
+
+ http://fedoraproject.org/wiki/Packaging/Guidelines#RequiringBasePackage
+
+PASSED MUST HAVE'S:
+
+[ pass ] MUST Packages must NOT contain any .la libtool archives, these must 
+         be removed in the spec if they are built.
+
+[ pass ] MUST Packages containing GUI applications must include a
+         %{name}.desktop file, and that file must be properly installed with 
+         desktop-file-install in the %install section. If you feel that your 
+         packaged GUI application does not need a .desktop file, you must put 
          a comment in the spec file with your explanation.
-[ fail ] MUST Packages must not own files or directories already owned by 
+
+[ pass ] MUST Packages must not own files or directories already owned by 
          other packages. The rule of thumb here is that the first package to 
          be installed should own the files or directories that other packages 
          may rely upon. This means, for example, that no package in Fedora 
@@ -104,7 +313,8 @@ Results for Bugzilla
          owned by the filesystem or man package. If you feel that you have a 
          good reason to own a file or directory that another package owns, 
          then please present that at package review time.
-[ fail ] MUST At the beginning of %install, each package MUST run rm -rf
-         %{buildroot} (or $RPM_BUILD_ROOT).
-[ fail ] MUST All filenames in rpm packages must be valid UTF-8.
 
+[ pass ] MUST At the beginning of %install, each package MUST run rm -rf
+         %{buildroot} (or $RPM_BUILD_ROOT).
+
+[ pass ] MUST All filenames in rpm packages must be valid UTF-8.

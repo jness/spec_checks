@@ -40,64 +40,19 @@ def runcheck(type, message, doc):
         status = 'fail'
     return results, status
 
-def readspec(spec):
-    if os.path.exists(spec):
-        f = file(spec, 'r')
-        content = f.readlines()
-        return content
-
-def specfile(spec):
-    specfile = spec.split('/')[-1]
-    return specfile
-
-def specname(spec_lines):
-    for line in spec_lines:
-        if 'Name: ' in line:
-            name = line.split()[1]
-            return name
-
-def specversion(spec_lines):
-    for line in spec_lines:
-        if 'Version: ' in line:
-            version = line.split()[1]
-            return version
-
-def speclicense(spec_lines):
-    for line in spec_lines:
-        if 'License: ' in line:
-            license = line
-            return license
-
-# Use argparse to take input for SPEC File
-parser = argparse.ArgumentParser()
-parser.add_argument('--spec', help='SPEC File', required=True)
-args = parser.parse_args()
-
 # Prep for run
 passed = []
 failed = []
 checks = configs()
-spec_lines = readspec(args.spec)
 
 # Run our Checks
 for check in sorted(checks):
     os.system('clear')
     message = checks[check]['message']
     print 'CHECK: ' + str(check)
-    print specfile(args.spec)
     print '='*80
     print '         ' + message + '\n'
     
-    # Try to run the command if it is there
-    try:
-        command = checks[check]['command']
-    except KeyError:
-        pass
-    else:
-        print specfile(args.spec) + ':'
-        print '-'*35
-        print '   ' + eval(command) + '\n'
-
     # See if we have Fedora Documentation
     try:
         doc = checks[check]['doc']

@@ -18,7 +18,7 @@ class colors:
 
 def configs():
     'Check config files in ./configs and parse the data'
-    config_dir = './configs'
+    config_dir = './configs_I_RUN_FEDORA'
     checks = {}
     for _file in glob("%s/*.conf" % config_dir):
         c = ConfigObj(_file)

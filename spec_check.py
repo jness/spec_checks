@@ -25,11 +25,13 @@ def configs():
 def runcheck(type, message, doc, default):
     if not default:
         default = 'pass'
+
+    # Catch CTRL + C on close
     try:
         userinput = raw_input('Does this look good (Y/n/skip) [' + default + ']: ')
-    except:
-        print '\nExiting....'
-        sys.exit(1)
+    except KeyboardInterrupt:
+        print '\n'
+        sys.exit()
 
     output = type + ' ' + message
 

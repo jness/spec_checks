@@ -3,14 +3,12 @@
 from glob import glob
 from configobj import ConfigObj
 import sys, os
+import pickle
 import argparse
 
 class colors:
-    pink = '\033[95m'
     red = '\033[91m'
     green = '\033[92m'
-    gold = '\033[93m'
-    blue = '\033[94m'
     end = '\033[0m'
 
 def configs():
@@ -24,26 +22,75 @@ def configs():
         checks[int(c['order'])] = c
     return checks
 
-def runcheck(type, message, doc):
-    userinput = raw_input('Does this look good (Y/n/skip): ')
+def runcheck(type, message, doc, default):
+    if not default:
+        default = 'pass'
+    try:
+        userinput = raw_input('Does this look good (Y/n/skip) [' + default + ']: ')
+    except:
+        print '\nExiting....'
+        sys.exit(1)
+
     output = type + ' ' + message
-    if userinput.lower() == 'y':
-        results = '[ ' + colors.green + 'pass' + colors.end + ' ] ' + output
+
+    # Check Input
+    if userinput.lower() == 'y' or userinput.lower() == 'pass':
+        color = colors.green
+        msg = 'pass'
         status = 'pass'
-    elif userinput.lower() == 'skip':
-        results = '[ ' + colors.green + '----' + colors.end + ' ] ' + output
-        status = 'pass'
+        default = False
+    elif userinput.lower() == 's' or userinput.lower() == 'skip':
+        color = colors.green
+        msg = '----'
+        status = 'skip'
+        default = False
+    elif userinput.lower() == 'n' or userinput.lower() == 'fail':
+        color = colors.red
+        msg = 'fail'
+        status = 'fail'
+        default = False
     else:
-        results = '''[ ''' + colors.red + '''fail''' + colors.end + ''' ] ''' + output + ''' 
+        color = colors.green
+        msg = 'pass'
+        status = 'pass'
+        default = True
+
+    # Message for Bugzilla
+    results = '''[ ''' + color + msg + colors.end + ''' ] ''' + output + ''' 
 
  ''' + doc
-        status = 'fail'
-    return results, status
+
+    return results, status, default
+
+def results_directory(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return
+
+def past_answers(path):
+    if os.path.exists(path + '/review'):
+        f = open(path + '/review', 'rb')
+        saved = pickle.load(f)
+        f.close()
+        return saved
+
+
+# Build my Parser with help for user input
+parser = argparse.ArgumentParser()
+parser.add_argument('name', help='Package Name')
+args = parser.parse_args()
 
 # Prep for run
 passed = []
 failed = []
 checks = configs()
+
+# Create our Save Path
+path = os.path.expanduser('~/.spec_check/' + args.name)
+results_directory(path)
+saved = past_answers(path)
+if not saved:
+    saved = {}
 
 # Run our Checks
 for check in sorted(checks):
@@ -62,12 +109,37 @@ for check in sorted(checks):
         print '  What does Fedora have to say?'
         print '  ' + doc + '\n'
     
+    try:
+        default = saved[checks[check]['order']]
+    except KeyError:
+        default = False
+    except TypeError:
+        default = False
+
     # Run the given check
-    mycheck = runcheck(checks[check]['type'], checks[check]['message'], checks[check]['doc'])
-    if mycheck[1] == 'pass':
-        passed.append(mycheck[0])
+    mycheck = runcheck(checks[check]['type'], checks[check]['message'], checks[check]['doc'], default)
+
+    # If we have a default from the saved file
+    if default and mycheck[2]:
+        if default == 'pass' or default == 'skip':
+            passed.append(mycheck[0])
+        else:
+            failed.append(mycheck[0])    
+
+        saved[checks[check]['order']] = default
+
     else:
-        failed.append(mycheck[0])    
+        if mycheck[1] == 'pass' or mycheck[1] == 'skip':
+            passed.append(mycheck[0])
+        else:
+            failed.append(mycheck[0])    
+
+        saved[checks[check]['order']] = mycheck[1]
+
+    # Store Check file
+    f = open(path + '/review', 'wb')
+    pickle.dump(saved, f)
+    f.close()
 
 
 os.system('clear')

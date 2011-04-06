@@ -1,5 +1,7 @@
 == SPEC_CHECKS
- This Tool gives you step by step questions for each enabled Config.
+ This Tool gives you step by step questions to assist in reviewing packages
+ for Fedora and EPEL. Upon completion you will be given output which 
+ is intended to be pasted in to the Bugzilla Package Review ticket.
  
  Currently the contents of the ./configs/ directory is based on the
  review process found at http://fedoraproject.org/wiki/Packaging/ReviewGuidelines

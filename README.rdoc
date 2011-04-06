@@ -4,6 +4,11 @@
  Currently the contents of the ./configs/ directory is based on the
  review process found at http://fedoraproject.org/wiki/Packaging/ReviewGuidelines
 
+== Requirements
+
+ spec_checks requires Python 2.7 as it uses argparse:
+ http://docs.python.org/dev/library/argparse.html
+
 == Getting Help
 
  Simply Clone the Git repo and run the python script

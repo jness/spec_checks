@@ -141,6 +141,8 @@ if args.results:
             default = False
 
         if default != 'fail' and default != False:
+            if default == 'skip':
+                default = '----'
             print '[', colors.green + default + colors.end, ']', checks[check]['type'], checks[check]['message']
             print '\n' + '  ' + checks[check]['doc'], '\n'
 

@@ -80,6 +80,8 @@ def past_answers(path):
 # Build my Parser with help for user input
 parser = argparse.ArgumentParser()
 parser.add_argument('name', help='Package Name')
+parser.add_argument('--results', action='store_true',
+        dest='results', default=None, help='Print out the report using saved answers')
 args = parser.parse_args()
 
 # Prep for run
@@ -93,6 +95,58 @@ results_directory(path)
 saved = past_answers(path)
 if not saved:
     saved = {}
+
+# Print results and quit
+if args.results:
+    if not saved:
+        print 'You do not have saved results for', args.name
+        sys.exit()
+
+    print "FAILED MUST HAVE's:\n"
+    for check in sorted(checks):
+
+        # Get documentation URL
+        try:
+            doc = checks[check]['doc']
+        except KeyError:
+            pass
+
+        # Get stored info
+        try:
+            default = saved[checks[check]['order']]
+        except KeyError:
+            default = False
+        except TypeError:
+            default = False
+
+        if default == 'fail':
+            print '[', default, ']', checks[check]['type'], checks[check]['message']
+            print '\n' + '  ' + checks[check]['doc'], '\n'
+
+    print "PASSED MUST HAVE's:\n"
+    for check in sorted(checks):
+
+        # Get documentation URL
+        try:
+            doc = checks[check]['doc']
+        except KeyError:
+            pass
+
+        # Get stored info
+        try:
+            default = saved[checks[check]['order']]
+        except KeyError:
+            default = False
+        except TypeError:
+            default = False
+
+        if default != 'fail' and default != False:
+            print '[', default, ']', checks[check]['type'], checks[check]['message']
+            print '\n' + '  ' + checks[check]['doc'], '\n'
+
+    # Only print so lets quit now
+    sys.exit()
+         
 
 # Run our Checks
 for check in sorted(checks):

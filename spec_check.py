@@ -2,7 +2,7 @@
 
 from glob import glob
 from configobj import ConfigObj
-import sys, os
+import sys, os, shutil
 import pickle
 import argparse
 
@@ -82,15 +82,28 @@ parser = argparse.ArgumentParser()
 parser.add_argument('name', help='Package Name')
 parser.add_argument('--results', action='store_true',
         dest='results', default=None, help='Print out the report using saved answers')
+parser.add_argument('--delete', action='store_true',
+        dest='delete', default=None, help='Delete saved information for given package name')
 args = parser.parse_args()
 
 # Prep for run
+path = os.path.expanduser('~/.spec_check/' + args.name)
 passed = []
 failed = []
 checks = configs()
 
+# If we want to delete saved info lets do it now
+if args.delete:
+    if os.path.exists(path):
+        shutil.rmtree(path)
+        print args.name + "'s saved answers removed"
+        sys.exit()
+    else:
+        print 'There does not appear to be saved answers for', args.name
+        sys.exit()
+
+
 # Create our Save Path
-path = os.path.expanduser('~/.spec_check/' + args.name)
 results_directory(path)
 saved = past_answers(path)
 if not saved:

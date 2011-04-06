@@ -120,7 +120,7 @@ if args.results:
             default = False
 
         if default == 'fail':
-            print '[', colors.red, default, colors.end, ']', checks[check]['type'], checks[check]['message']
+            print '[', colors.red + default + colors.end, ']', checks[check]['type'], checks[check]['message']
             print '\n' + '  ' + checks[check]['doc'], '\n'
 
     print "PASSED MUST HAVE's:\n"
@@ -141,7 +141,7 @@ if args.results:
             default = False
 
         if default != 'fail' and default != False:
-            print '[', colors.green, default, colors.end, ']', checks[check]['type'], checks[check]['message']
+            print '[', colors.green + default + colors.end, ']', checks[check]['type'], checks[check]['message']
             print '\n' + '  ' + checks[check]['doc'], '\n'
 
     # Only print so lets quit now

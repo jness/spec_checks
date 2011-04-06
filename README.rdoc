@@ -1,4 +1,4 @@
-== spec_check
+== SPEC_CHECKS
  This Tool gives you step by step questions for each enabled Config.
  
  Currently the contents of the ./configs/ directory is based on the
@@ -77,7 +77,7 @@
  
  Does this look good (Y/n/skip) [fail]:  
 
-== Printing Results of saved review
+== Printing Results of Saved Review
 
  $ ./spec_check.py php52 --results
  FAILED MUST HAVE's:
@@ -92,3 +92,13 @@
  [ pass ] MUST rpmlint must be run on every package
  
    http://fedoraproject.org/wiki/ParagNemade/CommonRpmlintErrors 
+
+== Deleting Saved Answers
+
+ $ ./spec_check.py php52 --delete
+ php52's saved answers removed
+
+ You will be notified if a saved file does not exisit
+
+ $ ./spec_check.py php52 --delete
+ There does not appear to be saved answers for php52

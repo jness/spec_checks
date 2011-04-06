@@ -17,9 +17,9 @@
  Resolving deltas: 100% (120/120), done.
  
  $ cd spec_checks/
- 
+
  $ ./spec_check.py --help
- usage: spec_check.py [-h] [--results] name
+ usage: spec_check.py [-h] [--results] [--delete] name
  
  positional arguments:
    name        Package Name
@@ -27,6 +27,7 @@
  optional arguments:
    -h, --help  show this help message and exit
    --results   Print out the report using saved answers
+   --delete    Delete saved information for given package name 
 
 == Running Script
  

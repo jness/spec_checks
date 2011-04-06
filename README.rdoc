@@ -1,0 +1,94 @@
+== spec_check
+ This Tool gives you step by step questions for each enabled Config.
+ 
+ Currently the contents of the ./configs/ directory is based on the
+ review process found at http://fedoraproject.org/wiki/Packaging/ReviewGuidelines
+
+== Getting Help
+
+ Simply Clone the Git repo and run the python script
+
+ $ git clone git://github.com/jness/spec_checks.git
+ Cloning into spec_checks...
+ remote: Counting objects: 201, done.
+ remote: Compressing objects: 100% (199/199), done.
+ remote: Total 201 (delta 120), reused 0 (delta 0)
+ Receiving objects: 100% (201/201), 26.90 KiB, done.
+ Resolving deltas: 100% (120/120), done.
+ 
+ $ cd spec_checks/
+ 
+ $ ./spec_check.py --help
+ usage: spec_check.py [-h] [--results] name
+ 
+ positional arguments:
+   name        Package Name
+ 
+ optional arguments:
+   -h, --help  show this help message and exit
+   --results   Print out the report using saved answers
+
+== Running Script
+ 
+ $ ./spec_check.py php52
+
+ CHECK: 1
+ ================================================================================
+          rpmlint must be run on every package
+ 
+   What does Fedora have to say?
+   http://fedoraproject.org/wiki/ParagNemade/CommonRpmlintErrors
+ 
+ Does this look good (Y/n/skip) [pass]: y
+ 
+ CHECK: 2
+ ================================================================================
+          The package must be named according to the Package Naming 
+          Guidelines
+ 
+   What does Fedora have to say?
+   http://fedoraproject.org/wiki/Packaging/NamingGuidelines
+
+ Does this look good (Y/n/skip) [pass]: n ^C
+
+== Resuming saved review
+
+ If a saved review is found in ~/.spec_check/{name}/review the script will resume
+ with default answers.
+
+ $ ./spec_check.py php52
+
+ CHECK: 1
+ ================================================================================
+          rpmlint must be run on every package
+ 
+   What does Fedora have to say?
+   http://fedoraproject.org/wiki/ParagNemade/CommonRpmlintErrors
+ 
+ Does this look good (Y/n/skip) [pass]:
+
+ CHECK: 2
+ ================================================================================
+          The package must be named according to the Package Naming 
+          Guidelines
+ 
+   What does Fedora have to say?
+   http://fedoraproject.org/wiki/Packaging/NamingGuidelines
+ 
+ Does this look good (Y/n/skip) [fail]:  
+
+== Printing Results of saved review
+
+ $ ./spec_check.py php52 --results
+ FAILED MUST HAVE's:
+ 
+ [ fail ] MUST The package must be named according to the Package Naming 
+          Guidelines
+ 
+   http://fedoraproject.org/wiki/Packaging/NamingGuidelines 
+ 
+ PASSED MUST HAVE's:
+ 
+ [ pass ] MUST rpmlint must be run on every package
+ 
+   http://fedoraproject.org/wiki/ParagNemade/CommonRpmlintErrors 
